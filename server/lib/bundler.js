@@ -3,7 +3,7 @@ const {clearDir} = require("./system");
 const logMessage = require("./log-message");
 const config = require('../../config/config.js');
 const paths = require('../../config/paths');
-const webpackConfig = config.isProduction ? require('../../config/webpack.config.prod') : require('../../config/webpack.config.express.dev');
+const webpackConfig = require(`../../config/${config.webpack.configJs}`);
 const webpackCompiler = webpack(webpackConfig);
 
 /**

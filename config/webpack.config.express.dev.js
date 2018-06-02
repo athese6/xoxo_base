@@ -47,7 +47,7 @@ const extractTextPluginOptions = shouldUseRelativeAssetPaths
 // It is focused on developer experience and fast rebuilds.
 // The production configuration is different and lives in a separate file.
 module.exports = {
-    watch: config.webpack.watch,
+    watch: config.webpack.hotReload,
     // You may want 'eval' instead if you prefer to see the compiled output in DevTools.
     // See the discussion in https://github.com/facebookincubator/create-react-app/issues/343.
     devtool: 'cheap-module-source-map',
@@ -73,7 +73,8 @@ module.exports = {
         // We include the app code last so that if there is a runtime error during
         // initialization, it doesn't blow up the WebpackDevServer client, and
         // changing JS code would still trigger a refresh.
-    ],
+
+    ].concat(config.webpack.hotReload ? 'webpack-hot-middleware/client' : []),
     output: {
         // Add /* filename */ comments to generated require()s in the output.
         pathinfo: true,
@@ -84,6 +85,10 @@ module.exports = {
         filename: '[name].[hash:8].js',
         // There are also additional JS chunk files if you use code splitting.
         chunkFilename: '[name].[hash:8].chunk.js',
+        hotUpdateMainFilename: "hot-update.json?v=[hash]",
+        hotUpdateChunkFilename: "[id].hot-update.js?v=[hash]",
+        // hotUpdateMainFilename: "hot-update.[name].[hash:8].json",
+        // hotUpdateChunkFilename: "hot-update.[name].[hash:8].chunk.js",
         // This is the URL that app is served from. We use "/" in development.
         publicPath: publicPath,
         // Point sourcemap entries to original disk location (format as URL on Windows)
@@ -287,8 +292,6 @@ module.exports = {
             fileName: config.appPath.assetManifestJson,
             publicPath: '/'
         }),
-        // This is necessary to emit hot updates (currently CSS only):
-        new webpack.HotModuleReplacementPlugin(),
         // Watcher doesn't work well if you mistype casing in a path so we use
         // a plugin that prints an error when you attempt to do this.
         // See https://github.com/facebookincubator/create-react-app/issues/240

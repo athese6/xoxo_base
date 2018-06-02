@@ -9,6 +9,7 @@ const cookieParser = require('cookie-parser');
 const jso = require('json-override');
 const logger = require('morgan');
 const proxy = require('http-proxy-middleware');
+const webpackHot = require('webpack-hot-middleware');
 const i18n = require('./lib/i18n');
 const ioredis = require('./lib/ioredis');
 const services = require('./services');
@@ -16,6 +17,7 @@ const routes = require('./routes');
 const passport = services.Passport();
 const config = require('../config/config.js');
 const usersRouter = require('./routes/users');
+const {webpackCompiler} = require("./lib/bundler");
 
 const app = express();
 
@@ -24,6 +26,8 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+
+config.webpack.hotReload && app.use(webpackHot(webpackCompiler));
 
 app.use(logger('dev'));
 app.use(bodyParser.json({limit: config.app.requestLimit}));

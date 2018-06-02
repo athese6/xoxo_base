@@ -27,7 +27,7 @@ const render = App => {
 // GA.init();
 // window.initDropDownFix();
 render(App);
-// module.hot && module.hot.accept('./app', () => render(require('./app').App));
+module.hot && module.hot.accept('./app', () => render(require('./app').App));
 // });
 
 // registerServiceWorker();
