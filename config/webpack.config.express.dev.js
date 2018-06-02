@@ -76,7 +76,7 @@ module.exports = {
     output: {
         // Add /* filename */ comments to generated require()s in the output.
         pathinfo: true,
-        path: paths.appBuildDev,
+        path: paths.appBuild,
         // This does not produce a real file. It's just the virtual path that is
         // served by WebpackDevServer in development. This is the JS bundle
         // containing code from all our entry points, and the Webpack runtime.

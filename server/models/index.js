@@ -1,4 +1,4 @@
-const thinky = require("..//thinky");
+const thinky = require("../lib/thinky");
 
 const models = {
     Constants: require("./constants"),

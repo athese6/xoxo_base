@@ -25,7 +25,7 @@ const printWebpackResults = stats => {
  * Clear webpack output folder as defined in the config file
  * @return {Promise}
  */
-const clearWebpackOutputDir = () => clearDir(`${paths.appBuildDev}`);
+const clearWebpackOutputDir = () => clearDir(`${paths.appBuild}`);
 
 /**
  * bundle webpack client folder

@@ -4,14 +4,17 @@ const session = require('express-session');
 const useragent = require('express-useragent');
 const requestIp = require('request-ip');
 const path = require('path');
+const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const jso = require('json-override');
 const logger = require('morgan');
 const proxy = require('http-proxy-middleware');
 const i18n = require('./lib/i18n');
 const ioredis = require('./lib/ioredis');
+const services = require('./services');
+const routes = require('./routes');
+const passport = services.Passport();
 const config = require('../config/config.js');
-const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 
 const app = express();
@@ -23,8 +26,9 @@ app.set('view engine', 'ejs');
 
 
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(bodyParser.json({limit: config.app.requestLimit}));
+app.use(bodyParser.urlencoded({limit: config.app.requestLimit, extended: true}));
+
 app.use(cookieParser());
 app.use(requestIp.mw());
 app.use(useragent.express());
@@ -39,6 +43,10 @@ if (ioredis.enabled) {
 }
 const user_session_init = session(user_session);
 app.use(user_session_init);
+const passport_initialize = passport.initialize();
+app.use(passport_initialize);
+const passport_session = passport.session();
+app.use(passport_session);
 
 app.use(i18n.init);
 i18n.configure();
@@ -66,9 +74,7 @@ app.use('/', express.static('build_dev'));
 // ));
 
 
-// app.use('/', indexController);
-
-app.use('/', indexRouter);
+app.use(routes);
 app.use('/users', usersRouter);
 
 app.get('/api/hello', (req, res) => {
