@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title><%= title %></title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="<%= manifest["main.css"] %>">
+</head>
+<body>
+<h1><%= title %></h1>
+<p>Welcome to <%= title %></p>
+<div id="root" data-state="<%= JSON.stringify(options.state) %>"></div>
+<script src="<%= manifest["vendors.js"] %>"></script>
+<script src="<%= manifest["main.js"] %>"></script>
+</body>
+</html>

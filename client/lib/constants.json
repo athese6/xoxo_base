@@ -1,0 +1,9 @@
+{
+  "api": {
+    "baseUrl": "/api/",
+    "timeout": 30000,
+    "headers": {
+      "X-Requested-With": "XMLHttpRequest"
+    }
+  }
+}
