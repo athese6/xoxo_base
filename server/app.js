@@ -48,9 +48,6 @@ app.use(passport_initialize);
 const passport_session = passport.session();
 app.use(passport_session);
 
-app.use(i18n.init);
-i18n.configure();
-
 // force current locale to user locale if this locale is available
 const rethinkdb = proxy('http://localhost:8080/');
 const rethinkdb_path = "/rethinkdb";

@@ -27,22 +27,7 @@ const render = App => {
 // GA.init();
 // window.initDropDownFix();
 render(App);
-module.hot && module.hot.accept('./app', () => render(require('./app').App));
+// module.hot && module.hot.accept('./app', () => render(require('./app').App));
 // });
-
-
-// window.onload = () => {
-//     Loadable.preloadReady().then(() => {
-//         // ReactDOM.hydrate(  this is for ssr
-//         ReactDOM.render(
-//             AppBundle,
-//             document.getElementById('root')
-//         );
-//     });
-// };
-
-// const root = document.querySelector('#root');
-// ReactDOM.render(AppBundle, root);
-
 
 // registerServiceWorker();

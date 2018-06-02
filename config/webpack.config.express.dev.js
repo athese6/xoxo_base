@@ -11,6 +11,7 @@ const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
+const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
 const config = require('./config.js');
@@ -283,7 +284,7 @@ module.exports = {
         // to their corresponding output file so that tools can pick it up without
         // having to parse `index.html`.
         new ManifestPlugin({
-            fileName: 'asset-manifest.json',
+            fileName: config.appPath.assetManifestJson,
             publicPath: '/'
         }),
         // This is necessary to emit hot updates (currently CSS only):
@@ -331,7 +332,13 @@ module.exports = {
         //         } : {},
         //     }
         // })
-    ],
+    ].concat(
+        // hot reload plugin
+        config.webpack.hotReload ? new webpack.HotModuleReplacementPlugin() : []
+    ).concat(
+        // webpack analyzer
+        config.webpack.analyze ? new BundleAnalyzerPlugin() : []
+    ),
     // Some libraries import Node modules but don't use them in the browser.
     // Tell Webpack to provide empty mocks for them so importing them works.
     node: {
