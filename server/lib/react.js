@@ -5,7 +5,7 @@ require('babel-register')({
     presets: [...config.webpack.babel.presets, 'react-app'],
     plugins: [...config.webpack.babel.plugins, 'syntax-dynamic-import', 'dynamic-import-node']
 });
-// require('babel-register')(config.webpack.babelSsr);
+
 const React = require('react');
 const {renderToString} = require('react-dom/server');
 const {createMemoryHistory} = require('history');

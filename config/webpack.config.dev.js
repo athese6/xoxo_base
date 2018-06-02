@@ -3,18 +3,27 @@
 const autoprefixer = require('autoprefixer');
 const path = require('path');
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
+const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
+const CompressionWebpackPlugin = require('compression-webpack-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
 const config = require('./config.js');
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
 const publicPath = '/';
+// Some apps do not use client-side routing with pushState.
+// For these, "homepage" can be set to "." to enable relative asset paths.
+const shouldUseRelativeAssetPaths = publicPath === './';
+// Source maps are resource heavy and can cause out of memory issue for large source files.
+const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
 // `publicUrl` is just like `publicPath`, but we will provide it to our app
 // as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.
 // Omit trailing slash as %PUBLIC_PATH%/xyz looks better than %PUBLIC_PATH%xyz.
@@ -22,10 +31,24 @@ const publicUrl = '';
 // Get environment variables to inject into our app.
 const env = getClientEnvironment(publicUrl);
 
+// Note: defined here because it will be used more than once.
+// const cssFilename = 'static/css/[name].[contenthash:8].css';
+const cssFilename = '[name].[hash:8].css';
+
+// ExtractTextPlugin expects the build output to be flat.
+// (See https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/27)
+// However, our output is structured with css, js and media folders.
+// To have this structure working with relative paths, we have to use custom options.
+const extractTextPluginOptions = shouldUseRelativeAssetPaths
+    ? // Making sure that the publicPath goes back to to build folder.
+    {publicPath: Array(cssFilename.split('/').length).join('../')}
+    : {};
+
 // This is the development configuration.
 // It is focused on developer experience and fast rebuilds.
 // The production configuration is different and lives in a separate file.
 module.exports = {
+    watch: config.webpack.hotReload,
     // You may want 'eval' instead if you prefer to see the compiled output in DevTools.
     // See the discussion in https://github.com/facebookincubator/create-react-app/issues/343.
     devtool: 'cheap-module-source-map',
@@ -45,22 +68,28 @@ module.exports = {
         // the line below with these two lines if you prefer the stock client:
         // require.resolve('webpack-dev-server/client') + '?/',
         // require.resolve('webpack/hot/dev-server'),
-        require.resolve('react-dev-utils/webpackHotDevClient'),
+        /*require.resolve('react-dev-utils/webpackHotDevClient'),*/
         // Finally, this is your app's code:
         paths.appIndexJs,
         // We include the app code last so that if there is a runtime error during
         // initialization, it doesn't blow up the WebpackDevServer client, and
         // changing JS code would still trigger a refresh.
-    ],
+
+    ].concat(config.webpack.hotReload ? 'webpack-hot-middleware/client' : []),
     output: {
         // Add /* filename */ comments to generated require()s in the output.
         pathinfo: true,
+        path: paths.appBuild,
         // This does not produce a real file. It's just the virtual path that is
         // served by WebpackDevServer in development. This is the JS bundle
         // containing code from all our entry points, and the Webpack runtime.
-        filename: 'static/js/[name].[hash:8].js',
+        filename: '[name].[hash:8].js',
         // There are also additional JS chunk files if you use code splitting.
-        chunkFilename: 'static/js/[name].[hash:8].chunk.js',
+        chunkFilename: '[name].[hash:8].chunk.js',
+        hotUpdateMainFilename: "hot-update.json?v=[hash]",
+        hotUpdateChunkFilename: "[id].hot-update.js?v=[hash]",
+        // hotUpdateMainFilename: "hot-update.[name].[hash:8].json",
+        // hotUpdateChunkFilename: "hot-update.[name].[hash:8].chunk.js",
         // This is the URL that app is served from. We use "/" in development.
         publicPath: publicPath,
         // Point sourcemap entries to original disk location (format as URL on Windows)
@@ -115,7 +144,18 @@ module.exports = {
                         options: {
                             formatter: eslintFormatter,
                             eslintPath: require.resolve('eslint'),
-
+                            /*emitWarning (default: false)
+                            Loader will always return warnings if option is set to true. If you're using hot module replacement, you may wish to enable this in development, or else updates will be skipped when there's an eslint error. */
+                            emitError: false,
+                            /*quiet (default: false)
+                            Loader will process and report errors only and ignore warnings if this option is set to true*/
+                            quiet: false,
+                            /*failOnWarning (default: false)
+                            Loader will cause the module build to fail if there are any eslint warnings.*/
+                            failOnWarning: false,
+                            /*failOnError (default: false)
+                            Loader will cause the module build to fail if there are any eslint errors.*/
+                            failOnError: false,
                         },
                         loader: require.resolve('eslint-loader'),
                     },
@@ -145,46 +185,68 @@ module.exports = {
                         loader: require.resolve('babel-loader'),
                         options: config.webpack.babel,
                     },
+                    // The notation here is somewhat confusing.
                     // "postcss" loader applies autoprefixer to our CSS.
                     // "css" loader resolves paths in CSS and adds assets as dependencies.
-                    // "style" loader turns CSS into JS modules that inject <style> tags.
-                    // In production, we use a plugin to extract that CSS to a file, but
-                    // in development "style" loader enables hot editing of CSS.
+                    // "style" loader normally turns CSS into JS modules injecting <style>,
+                    // but unlike in development configuration, we do something different.
+                    // `ExtractTextPlugin` first applies the "postcss" and "css" loaders
+                    // (second argument), then grabs the result CSS and puts it into a
+                    // separate file in our build process. This way we actually ship
+                    // a single CSS file in production instead of JS code injecting <style>
+                    // tags. If you use code splitting, however, any async bundles will still
+                    // use the "style" loader inside the async code so CSS from them won't be
+                    // in the main CSS file.
                     {
-                        test: /\.css$/,
-                        use: [
-                            require.resolve('style-loader'),
-                            {
-                                loader: require.resolve('css-loader'),
-                                options: {
-                                    importLoaders: 1,
-                                },
-                            },
-                            {
-                                loader: require.resolve('postcss-loader'),
-                                options: {
-                                    // Necessary for external CSS imports to work
-                                    // https://github.com/facebookincubator/create-react-app/issues/2677
-                                    ident: 'postcss',
-                                    plugins: () => [
-                                        require('postcss-flexbugs-fixes'),
-                                        autoprefixer({
-                                            browsers: [
-                                                '>1%',
-                                                'last 4 versions',
-                                                'Firefox ESR',
-                                                'not ie < 9', // React doesn't support IE8 anyway
-                                            ],
-                                            flexbox: 'no-2009',
-                                        }),
+                        // test: /\.css$/,
+                        test: /\.scss$|\.css$/,
+                        loader: ExtractTextPlugin.extract(
+                            Object.assign(
+                                {
+                                    fallback: {
+                                        loader: require.resolve('style-loader'),
+                                        options: {
+                                            hmr: false,
+                                        },
+                                    },
+                                    use: [
+                                        {
+                                            loader: require.resolve('css-loader'),
+                                            options: {
+                                                importLoaders: 1,
+                                                minimize: true,
+                                                sourceMap: shouldUseSourceMap,
+                                            },
+                                        },
+                                        {
+                                            loader: require.resolve('postcss-loader'),
+                                            options: {
+                                                // Necessary for external CSS imports to work
+                                                // https://github.com/facebookincubator/create-react-app/issues/2677
+                                                ident: 'postcss',
+                                                plugins: () => [
+                                                    require('postcss-flexbugs-fixes'),
+                                                    autoprefixer({
+                                                        browsers: [
+                                                            '>1%',
+                                                            'last 4 versions',
+                                                            'Firefox ESR',
+                                                            'not ie < 9', // React doesn't support IE8 anyway
+                                                        ],
+                                                        flexbox: 'no-2009',
+                                                    }),
+                                                ],
+                                            },
+                                        },
                                     ],
                                 },
-                            },
-                        ],
+                                extractTextPluginOptions
+                            )
+                        ),
+                        // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
                     },
-                    // "file" loader makes sure those assets get served by WebpackDevServer.
-                    // When you `import` an asset, you get its (virtual) filename.
-                    // In production, they would get copied to the `build` folder.
+                    // "file" loader makes sure assets end up in the `build` folder.
+                    // When you `import` an asset, you get its filename.
                     // This loader doesn't use a "test" so it will catch all modules
                     // that fall through the other loaders.
                     {
@@ -198,10 +260,10 @@ module.exports = {
                             name: 'static/media/[name].[hash:8].[ext]',
                         },
                     },
+                    // ** STOP ** Are you adding a new loader?
+                    // Make sure to add the new loader(s) before the "file" loader.
                 ],
             },
-            // ** STOP ** Are you adding a new loader?
-            // Make sure to add the new loader(s) before the "file" loader.
         ],
     },
     plugins: [
@@ -210,18 +272,22 @@ module.exports = {
         // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
         // In development, this will be an empty string.
         new InterpolateHtmlPlugin(env.raw),
-        // Generates an `index.html` file with the <script> injected.
-        new HtmlWebpackPlugin({
-            inject: true,
-            template: paths.appHtml,
-        }),
         // Add module names to factory functions so they appear in browser profiler.
         new webpack.NamedModulesPlugin(),
         // Makes some environment variables available to the JS code, for example:
         // if (process.env.NODE_ENV === 'development') { ... }. See `./env.js`.
         new webpack.DefinePlugin(env.stringified),
-        // This is necessary to emit hot updates (currently CSS only):
-        new webpack.HotModuleReplacementPlugin(),
+        // Note: this won't work without ExtractTextPlugin.extract(..) in `loaders`.
+        new ExtractTextPlugin({
+            filename: cssFilename,
+        }),
+        // Generate a manifest file which contains a mapping of all asset filenames
+        // to their corresponding output file so that tools can pick it up without
+        // having to parse `index.html`.
+        new ManifestPlugin({
+            fileName: config.appPath.assetManifestJson,
+            publicPath: publicPath
+        }),
         // Watcher doesn't work well if you mistype casing in a path so we use
         // a plugin that prints an error when you attempt to do this.
         // See https://github.com/facebookincubator/create-react-app/issues/240
@@ -237,7 +303,42 @@ module.exports = {
         // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
         // You can remove this if you don't use Moment.js:
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    ],
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'vendors',
+            // split only javascript
+            minChunks: ({context, resource}) => resource && (/^.*\.(css|scss)$/).test(resource) ? false : /node_modules/.test(context),
+        }),
+        // new webpack.ProvidePlugin({
+        //     $: 'jquery/dist/jquery',
+        //     jQuery: 'jquery/dist/jquery',
+        //     'window.$': 'jquery/dist/jquery',
+        //     'window.jQuery': 'jquery/dist/jquery',
+        //     "Hammer": "hammerjs/hammer",
+        // })
+    ].concat(
+        // webpack analyzer
+        config.webpack.analyze ? new BundleAnalyzerPlugin() : []
+    ).concat(
+        config.webpack.optimize ? [
+            new OptimizeCssAssetsPlugin({
+                assetNameRegExp: /\.scss\?.*$|\.css\?.*$/gi,
+                cssProcessorOptions: {discardComments: {removeAll: true}}
+            }),
+            // new OptimizeCssAssetsPlugin({
+            //     assetNameRegExp: /\.optimize\.css$/g,
+            //     cssProcessor: require('cssnano'),
+            //     cssProcessorOptions: {discardComments: {removeAll: true}},
+            //     canPrint: true
+            // }),
+            new CompressionWebpackPlugin({
+                asset: '[path].gz',
+                algorithm: 'gzip',
+                minRatio: 0.8
+            })] : []
+    ).concat(
+        // hot reload plugin
+        config.webpack.hotReload ? new webpack.HotModuleReplacementPlugin() : []
+    ),
     // Some libraries import Node modules but don't use them in the browser.
     // Tell Webpack to provide empty mocks for them so importing them works.
     node: {

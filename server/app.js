@@ -10,6 +10,8 @@ const jso = require('json-override');
 const logger = require('morgan');
 const proxy = require('http-proxy-middleware');
 const webpackHot = require('webpack-hot-middleware');
+const minifyHTML = require('express-minify-html');
+const compression = require('compression');
 const i18n = require('./lib/i18n');
 const ioredis = require('./lib/ioredis');
 const services = require('./services');
@@ -20,6 +22,46 @@ const usersRouter = require('./routes/users');
 const {webpackCompiler} = require("./lib/bundler");
 
 const app = express();
+
+// force ssl
+if (config.ssl.enable) {
+    app.use((req, res, next) => {
+        if (!req.secure) {
+            return res.redirect(301, ['https://', req.get('Host'), req.url].join(''));
+        }
+        next();
+    });
+}
+
+app.use((req, res, next) => {
+    const host = req.get('Host');
+    if (host === 'www.hapoom.co') {
+        if (config.ssl.enable) {
+            return res.redirect(301, 'https://hapoom.co' + req.url);
+        } else {
+            return res.redirect(301, 'http://hapoom.co' + req.url);
+        }
+    }
+    next();
+});
+
+if (config.webpack.optimize) {
+    app.use(minifyHTML({
+        override: true,
+        exception_url: false,
+        htmlMinifier: {
+            removeComments: true,
+            collapseWhitespace: true,
+            collapseBooleanAttributes: true,
+            removeAttributeQuotes: true,
+            removeEmptyAttributes: true,
+            minifyJS: true,
+            minifyCSS: true,
+            useShortDoctype: true
+        }
+    }));
+    app.use(compression());
+}
 
 // config.express(app);
 // view engine setup
@@ -82,8 +124,14 @@ app.get('/api/hello', (req, res) => {
     res.send({express: 'Hello From Express213'});
 });
 
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
+/****** error handlers ******/
+// catch 404 and forward to error handler or redirect
+app.use((req, res, next) => {
+    if (req.xhr) {
+        return next();
+    }
+    // res.status(404);
+    // res.render("error");
     next(createError(404));
 });
 
@@ -95,7 +143,29 @@ app.use(function (err, req, res, next) {
 
     // render the error page
     res.status(err.status || 500);
-    res.render('error');
+    console.log(err);
+    res.send(err.message);
 });
 
+// ajax error handler
+app.use((err, req, res, next) => {
+    console.log(err);
+    if (req.xhr) {
+        return res.json({"error": err});
+    }
+    next(err);
+});
+
+// html error handler
+app.use((err, req, res, next) => {
+    if (config.isProduction()) {
+        res.redirect("/");
+        res.status(404);
+        res.send(err.message);
+    } else {
+        // res.send();
+        res.status(404);
+        res.send(err.message);
+    }
+});
 module.exports = app;

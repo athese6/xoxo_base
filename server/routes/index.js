@@ -1,7 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const path = require("../../config/paths");
-const manifest = require(`${path.appBuild}/asset-manifest.json`);
 const config = require('../../config/config.js');
 const {reactServerRender} = require("../lib/react");
 const url = require('url');

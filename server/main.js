@@ -1,15 +1,9 @@
-const webpack = require('webpack');
 const debug = require('debug')('hapoom:server');
 const http = require('http');
 const https = require('https');
 const fs = require('fs');
 const app = require('./app');
 const config = require('../config/config.js');
-// const app_config = config.app;
-// const ssl_config = config.ssl;
-
-// const app = express();
-
 
 /**
  * Create HTTP server.
@@ -42,17 +36,6 @@ if (ssl_config.enable) {
     https_server.on('listening', onListening);
 }
 
-
-// if (process.env.NODE_ENV == 'development') {
-//     console.log('Server is running on development mode');
-//
-//     const config = require('../webpack.dev.config');
-//     let compiler = webpack(config);
-//     let devServer = new WebpackDevServer(compiler, config.devServer);
-//     devServer.listen(8001, () => {
-//         console.log('webpack-dev-server is listening on port', 8001);
-//     });
-// }
 
 // setup socket.io server
 // socket_io.init(https_server || server);
