@@ -108,8 +108,8 @@ app.use(rethinkdb_path, (req, res, next) => {
 });
 
 
-app.use('/', express.static('public'));
-app.use('/', express.static('build_dev'));
+// app.use('/', express.static(config.appPath.public));
+app.use('/', express.static(config.appPath.appBuild));
 // other static resources should just be served as they are
 // router.use(express.static(
 //     path.resolve(__dirname, '..', '..', 'build'),
