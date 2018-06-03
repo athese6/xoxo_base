@@ -11,6 +11,7 @@ const {renderToString} = require('react-dom/server');
 const {createMemoryHistory} = require('history');
 const {ServerStyleSheet} = require("styled-components");
 const {replace} = require('react-router-redux');
+const Helmet = require('react-helmet').default;
 const {App} = require('../../client/app');
 const configureStore = require("../../client/store/configureStore").default;
 const theme = require("../../client/theme/theme").default;
@@ -33,15 +34,23 @@ const reactServerRender = (req, res, next, options) => {
     // get html and styled components css
     const cacheKey = `${req.url}`;
     // get cache only for not logged in user
-    if (config.webpack.optimize && req.isUnauthenticated() && ssrCache[cacheKey]) {
-        return res.send(ssrCache[cacheKey]);
-    }
+    // if (config.webpack.optimize && req.isUnauthenticated() && ssrCache[cacheKey]) {
+    //     return res.send(ssrCache[cacheKey]);
+    // }
     const sheet = new ServerStyleSheet();
+    // Let Helmet know to insert the right tags
+
+
     options.html = renderToString(
         sheet.collectStyles(React.createElement(App, {store, theme, history}))
     );
     options.css = sheet.getStyleTags();
     options.manifest = manifest;
+    const helmet = Helmet.renderStatic();
+    options.helmetTitle = helmet.title.toString();
+    options.helmetLink = helmet.link.toString();
+    options.helmetMeta = helmet.meta.toString();
+
     // Now, since we have a functional react-router-redux on server, can check that state
     return res.render("index", options, (err, html) => {
         if (err) return next(err);

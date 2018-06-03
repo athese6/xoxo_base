@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import autobind from "autobind-decorator";
 import {push} from "react-router-redux";
 import moment from "moment";
+import Seo from "./components/seo";
 import base from "./components/base";
 import authAction from "../actions/auth";
 
@@ -140,6 +141,7 @@ export default class LandingLayout extends React.Component {
         // console.log("load %s", Platform.OS, Platform.Version);
         return (
             <Div>
+                <Seo/>
                 <Button color={"yellow"} onClick={this.goToSMS}>button</Button>
                 <Button color={"green"} onClick={this.loglog}>button123</Button>
                 <Button color={"blue"} onClick={this.actionTest}>button123</Button>

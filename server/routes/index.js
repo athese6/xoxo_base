@@ -68,8 +68,10 @@ const url = require('url');
  */
 const resolvePath = (...args) => args.filter(arg => arg).join("/");
 
+// const routeList = ["/", "/sms"];
 // the req.url here should be the full URL path from
 // the original request, including the query string.
+// router.get(routeList, (req, res, next) => {
 router.get(["/:lang?", "/:lang?/*"], (req, res, next) => {
     const {user = {}, query} = req;
     const {lang} = req.params;

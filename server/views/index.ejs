@@ -4,21 +4,12 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
+    <%- helmetTitle %>
+    <%- helmetLink %>
+    <%- helmetMeta %>
     <link rel="manifest" href="manifest.json">
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" href="<%= manifest["main.css"] %>">
-    <title><%= __({phrase: "tag_default_title", locale: user.lang}) %></title>
-    <link rel="canonical" href="https://xoxo.com"/>
-    <meta name="description" content="<%= __({phrase: "tag_default_description", locale: user.lang}) %>"/>
-    <meta name="keywords" content="<%= __({phrase: "tag_default_keywords", locale: user.lang}) %>"/>
-    <meta name="author" content="<%= __({phrase: "tag_default_author", locale: user.lang}) %>"/>
-    <meta property="og:title" content="<%= __({phrase: "tag_default_title", locale: user.lang}) %>"/>
-    <meta property="og:site_name" content="<%= __({phrase: "tag_default_site_name", locale: user.lang}) %>"/>
-    <meta property="og:type" content="website"/>
-    <meta property="og:url" content="<%= __({phrase: "tag_default_url", locale: user.lang}) %>"/>
-    <meta property="og:image" content="<%= __({phrase: "tag_default_image", locale: user.lang}) %>"/>
-    <meta property="og:description" content="<%= __({phrase: "tag_default_description", locale: user.lang}) %>"/>
-    <meta property="og:locale" content="<%= __({phrase: "tag_default_og_locale", locale: user.lang}) %>"/>
     <%- css %>
 </head>
 <body>
