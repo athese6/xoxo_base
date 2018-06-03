@@ -57,6 +57,7 @@
     "materialize-css": "^1.0.0-rc.1",
     "moment": "^2.22.1",
     "morgan": "^1.9.0",
+    "node-account-kit": "^1.0.0",
     "object-assign": "4.1.1",
     "optimize-css-assets-webpack-plugin": "3.2.0",
     "passport": "^0.4.0",

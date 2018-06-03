@@ -21,6 +21,7 @@ yarn-debug.log*
 yarn-error.log*
 
 .idea
+.env-cmdrc
 /build_dev
 /config/config.*
 /i18n/download-languages.js

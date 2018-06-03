@@ -12,13 +12,13 @@ const proxy = require('http-proxy-middleware');
 const webpackHot = require('webpack-hot-middleware');
 const minifyHTML = require('express-minify-html');
 const compression = require('compression');
+const accountkit = require("./lib/facebook-account-kit");
 const i18n = require('./lib/i18n');
 const ioredis = require('./lib/ioredis');
 const services = require('./services');
 const routes = require('./routes');
 const passport = services.Passport();
 const config = require('../config/config.js');
-const usersRouter = require('./routes/users');
 const {webpackCompiler} = require("./lib/bundler");
 
 const app = express();
@@ -35,11 +35,11 @@ if (config.ssl.enable) {
 
 app.use((req, res, next) => {
     const host = req.get('Host');
-    if (host === 'www.hapoom.co') {
+    if (host === 'www.xoxo.com') {
         if (config.ssl.enable) {
-            return res.redirect(301, 'https://hapoom.co' + req.url);
+            return res.redirect(301, 'https://xoxo.com' + req.url);
         } else {
-            return res.redirect(301, 'http://hapoom.co' + req.url);
+            return res.redirect(301, 'http://xoxo.com' + req.url);
         }
     }
     next();
@@ -107,6 +107,7 @@ app.use(rethinkdb_path, (req, res, next) => {
     next();
 });
 
+accountkit.init();
 
 // app.use('/', express.static(config.appPath.public));
 app.use('/', express.static(config.appPath.appBuild));
@@ -117,12 +118,9 @@ app.use('/', express.static(config.appPath.appBuild));
 // ));
 
 
+app.use("/api", require('./routes/api'));
 app.use(routes);
-app.use('/users', usersRouter);
 
-app.get('/api/hello', (req, res) => {
-    res.send({express: 'Hello From Express213'});
-});
 
 /****** error handlers ******/
 // catch 404 and forward to error handler or redirect

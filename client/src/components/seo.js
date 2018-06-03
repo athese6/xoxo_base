@@ -20,7 +20,7 @@ export default class SEO extends React.Component {
                 }
                 {
                     process.REACT_APP_BASE_URL &&
-                    <link rel="canonical" href={process.REACT_APP_BASE_URL + path}/>
+                    <link rel="canonical" href={process.env.REACT_APP_BASE_URL + path}/>
                 }
                 {
                     (description || lang["tag_default_description"]) &&
@@ -45,7 +45,7 @@ export default class SEO extends React.Component {
                 <meta property="og:type" content={"website"}/>
                 {
                     process.REACT_APP_BASE_URL &&
-                    <meta property="og:url" content={process.REACT_APP_BASE_URL + path}/>
+                    <meta property="og:url" content={process.env.REACT_APP_BASE_URL + path}/>
                 }
                 {
                     (image || lang["tag_default_image"]) &&
@@ -56,9 +56,9 @@ export default class SEO extends React.Component {
                     <meta property="og:description" content={description || lang["tag_default_description"]}/>
                 }
                 {
-                    (lang["tag_default_og_locale"] || process.REACT_APP_FACEBOOK_DEFAULT_LOCALE) &&
+                    (lang["tag_default_og_locale"] || process.env.REACT_APP_FACEBOOK_DEFAULT_LOCALE) &&
                     <meta property="og:locale"
-                          content={lang["tag_default_og_locale"] || process.REACT_APP_FACEBOOK_DEFAULT_LOCALE}/>
+                          content={lang["tag_default_og_locale"] || process.env.REACT_APP_FACEBOOK_DEFAULT_LOCALE}/>
                 }
             </Helmet>
         );
