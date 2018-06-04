@@ -96,9 +96,9 @@
     "whatwg-fetch": "2.0.3"
   },
   "scripts": {
-    "start:dev": "./node_modules/.bin/env-cmd base,development node $NODE_DEBUG_OPTION scripts/start.express.js",
+    "start:dev": "./node_modules/.bin/env-cmd base,development node $NODE_DEBUG_OPTION scripts/start.js",
     "build:production": "./node_modules/.bin/env-cmd base,production node scripts/bundle.js",
-    "start": "./node_modules/.bin/env-cmd base,production node scripts/start.express.js",
+    "start": "./node_modules/.bin/env-cmd base,production node scripts/start.js",
     "test": "node scripts/test.js --env=jsdom",
     "reset-babel-cache": "rm -rf $TMPDIR/react-*"
   },

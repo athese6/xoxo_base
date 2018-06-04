@@ -12,34 +12,36 @@ module.exports = {
         confirmation: 1,
         confirm_change_password: 2,
         forgot_your_password: 3,
-        invited_people: 4,
         invited_team: 5,
-        shared_files: 6,
     },
     Prefix: {
-        Browser: "brw-",
-        Device: "dvc-",
-        User: "usr-",
-        Price: "prc-",
-        RequestFormAnswers: "rfa-",
         Asset: "ast-",
-        Survey: "svy-",
     },
-    UserRole: {
-        admin: "admin",
-        guest: "guest",
-        member: "member",
-        manager: "manager",
-        bot: "bot"
+    _Browser: {
+        Prefix: "brw-",
     },
-    Gender: {
-        male: "male",
-        female: "female"
+    _User: {
+        Prefix: "usr-",
+        Role: {
+            admin: "admin",
+            manager: "manager",
+            member: "member",
+            guest: "guest",
+            bot: "bot"
+        },
+        Gender: {
+            male: "male",
+            female: "female"
+        }
     },
-    Subscription: {
-        all: "all",
-        house: "house",
-        cafe: "cafe"
+    _Company: {
+        Prefix: "cmpn-",
+        Type: {
+            all: "all",
+            meeting: "meeting"
+        }
+    },
+    _Branch: {
+        Prefix: "brnc-",
     }
-
 };

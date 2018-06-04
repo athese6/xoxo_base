@@ -7,7 +7,7 @@
 /coverage
 
 # production
-/build
+#/build
 
 # misc
 .DS_Store
@@ -23,5 +23,7 @@ yarn-error.log*
 .idea
 .env-cmdrc
 /build_dev
-/config/config.*
+/key
+/config/config.json
+/config/config.*.json
 /i18n/download-languages.js

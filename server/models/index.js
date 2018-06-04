@@ -3,6 +3,8 @@ const thinky = require("../lib/thinky");
 const models = {
     Constants: require("./constants"),
     User: require("./user"),
+    Company: require("./company"),
+    Branch: require("./branch"),
     Browser: require("./browser"),
     Error: require("./error")
 };

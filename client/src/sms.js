@@ -64,7 +64,9 @@ export default class SMSLayout extends React.Component {
             appId: process.env.REACT_APP_FACEBOOK_APP_ID,
             state: this.props.facebook.csrf,
             version: process.env.REACT_APP_FACEBOOK_APP_ACCOUNT_KIT_API_VERSION,
-            fbAppEventsEnabled: true
+            fbAppEventsEnabled: true,
+            debug: false,
+            display: "popup" //popup, modal
         });
     }
 
