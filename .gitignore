@@ -24,6 +24,4 @@ yarn-error.log*
 .env-cmdrc
 /build_dev
 /key
-/config/config.json
-/config/config.*.json
 /i18n/download-languages.js

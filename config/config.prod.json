@@ -1,0 +1,28 @@
+{
+  "app": {
+    "contextName": "http://13.124.177.205",
+    "port": 80,
+    "public": "public",
+    "default_link_image": "public/img/link.png"
+  },
+  "appPath": {
+    "appBuild": "build"
+  },
+  "ssl": {
+    "enable": false,
+    "port": 443
+  },
+  "i18n": {
+    "syncFiles": false,
+    "updateFiles": false
+  },
+  "webpack": {
+    "configJs": "webpack.config.prod.js",
+    "hotReload": false,
+    "analyze": false,
+    "optimize": true,
+    "babel": {
+      "compact": true
+    }
+  }
+}

@@ -1,0 +1,174 @@
+{
+  "admins": [
+    "henry82xoxo@gmail.com",
+    "henry@hapoom.co",
+    "athese6@gmail.com"
+  ],
+  "app": {
+    "id": "com.gmail.henry82xoxo",
+    "contextName": "http://localhost",
+    "port": 8000,
+    "views": "./views",
+    "view engine": "ejs",
+    "public": "public",
+    "logger": "dev",
+    "default_link_type": "article",
+    "default_link_image": "public/img/link.png",
+    "requestLimit": "200MB"
+  },
+  "appPath": {
+    "public": "public",
+    "appBuild": "build",
+    "appSrc": "client",
+    "appIndexJs": "client/index.js",
+    "configJs": "config/config.js",
+    "assetManifestJson": "asset-manifest.json"
+  },
+  "ssl": {
+    "enable": false,
+    "port": 8443,
+    "passphrase": "xoxocom12345",
+    "key": "ssl/_wildcard_.xoxo.com_2018051893P7.key.pem",
+    "cert": "ssl/_wildcard_.xoxo.com_2018051893P7.crt.pem",
+    "ca": [
+      "ssl/RootChain/COMODORSAAddTrustCA.crt",
+      "ssl/RootChain/COMODORSADomainValidationSecureServerCA.crt"
+    ]
+  },
+  "session": {
+    "secret": "xoxo app user auth 4642164",
+    "resave": false,
+    "rolling": true,
+    "saveUninitialized": false,
+    "name": "connect.xoxo",
+    "cookie": {
+      "httpOnly": false,
+      "secure": false,
+      "maxAge": 30000,
+      "rememberMe": 31540000000
+    }
+  },
+  "thinky": {
+    "db": "xoxo",
+    "host": "localhost",
+    "port": 28015,
+    "min": 50,
+    "max": 1000,
+    "bufferSize": 50,
+    "timeoutError": 1000,
+    "timeoutGb": 3600000,
+    "authKey": ""
+  },
+  "ioredis": {
+    "enable": true,
+    "host": "127.0.0.1",
+    "port": 6379
+  },
+  "i18n": {
+    "cookie": "locale",
+    "defaultLocale": "ko",
+    "directory": "i18n",
+    "queryParameter": "lang",
+    "autoReload": true,
+    "syncFiles": true,
+    "updateFiles": true,
+    "register": "global",
+    "locales": [
+      {
+        "code": "en",
+        "name": "English",
+        "available": true
+      },
+      {
+        "code": "ko",
+        "name": "한국어",
+        "available": true
+      }
+    ]
+  },
+  "passport": {
+    "local": {
+      "usernameField": "email",
+      "passwordField": "password"
+    },
+    "facebook": {
+      "clientID": "clientID",
+      "clientSecret": "clientSecret",
+      "callbackURL": "/api/auth/facebook/callback",
+      "profileFields": [
+        "id",
+        "name",
+        "link",
+        "gender",
+        "locale",
+        "picture",
+        "timezone",
+        "updated_time",
+        "email"
+      ]
+    },
+    "kakao": {
+      "clientID": "clientID",
+      "clientSecret": "clientSecret",
+      "callbackURL": "/api/auth/kakao/callback"
+    },
+    "naver": {
+      "clientID": "clientID",
+      "clientSecret": "clientSecret",
+      "callbackURL": "/api/auth/naver/callback"
+    },
+    "google": {
+      "clientID": "clientID",
+      "clientSecret": "clientSecret",
+      "callbackURL": "/api/auth/google/callback"
+    },
+    "instagram": {
+      "clientID": "clientID",
+      "clientSecret": "clientSecret",
+      "callbackURL": "/api/auth/instagram/callback"
+    }
+  },
+  "webpack": {
+    "configJs": "webpack.config.dev.js",
+    "hotReload": true,
+    "clearOutput": true,
+    "splitVendor": true,
+    "analyze": false,
+    "ignore": [
+      "electron"
+    ],
+    "babel": {
+      "presets": [
+        "es2015",
+        "stage-1"
+      ],
+      "plugins": [
+        "transform-decorators-legacy"
+      ]
+    },
+    "babelTest": {
+      "presets": [
+        "es2015",
+        "stage-0",
+        "react-app"
+      ],
+      "plugins": [
+        [
+          "styled-components",
+          {
+            "ssr": true
+          }
+        ],
+        "transform-decorators-legacy",
+        "transform-react-constant-elements",
+        "transform-react-inline-elements",
+        "transform-flow-strip-types",
+        "transform-remove-strict-mode",
+        "transform-react-remove-prop-types",
+        "transform-inline-environment-variables",
+        "syntax-dynamic-import",
+        "dynamic-import-node"
+      ]
+    }
+  }
+}

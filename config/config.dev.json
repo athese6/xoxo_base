@@ -1,0 +1,10 @@
+{
+  "appPath": {
+    "appBuild": "build_dev"
+  },
+  "webpack": {
+    "babel": {
+      "cacheDirectory": true
+    }
+  }
+}
