@@ -4,12 +4,8 @@ import autobind from "autobind-decorator";
 import {push} from "react-router-redux";
 import moment from "moment";
 import Seo from "./components/seo";
-import base from "./components/base";
+import {Utils, Button, View, Text} from './components/base';
 import authAction from "../actions/auth";
-
-const Utils = base.Utils;
-const Button = base.Button;
-const Div = base.View;
 
 // Utils.isReactNative() ? {} : {}
 
@@ -140,12 +136,12 @@ export default class LandingLayout extends React.Component {
     render() {
         // console.log("load %s", Platform.OS, Platform.Version);
         return (
-            <Div>
+            <View>
                 <Seo/>
                 <Button color={"yellow"} onClick={this.goToSMS}>button</Button>
                 <Button color={"green"} onClick={this.loglog}>button123</Button>
                 <Button color={"blue"} onClick={this.actionTest}>button123</Button>
-            </Div>
+            </View>
         );
     }
 }

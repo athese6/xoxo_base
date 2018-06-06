@@ -221,6 +221,7 @@ module.exports = {
                                         {
                                             loader: require.resolve('postcss-loader'),
                                             options: {
+                                                sourceMap: shouldUseSourceMap,
                                                 // Necessary for external CSS imports to work
                                                 // https://github.com/facebookincubator/create-react-app/issues/2677
                                                 ident: 'postcss',
@@ -236,6 +237,13 @@ module.exports = {
                                                         flexbox: 'no-2009',
                                                     }),
                                                 ],
+                                            },
+                                        },
+                                        {
+                                            loader: require.resolve('sass-loader'),
+                                            options: {
+                                                sourceMap: shouldUseSourceMap,
+                                                data: "$env: " + process.env.NODE_ENV + ";"
                                             },
                                         },
                                     ],

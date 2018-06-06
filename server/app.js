@@ -111,6 +111,7 @@ accountkit.init();
 
 // app.use('/', express.static(config.appPath.public));
 app.use('/', express.static(config.appPath.appBuild));
+app.use(`/${config.appPath.appUploadImage}`, express.static(config.appPath.appUploadImage));
 // other static resources should just be served as they are
 // router.use(express.static(
 //     path.resolve(__dirname, '..', '..', 'build'),

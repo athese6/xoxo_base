@@ -1,16 +1,17 @@
+import React from "react";
+import {Provider} from "react-redux";
+import {Router, Route, Switch, Redirect} from "react-router";
+import {ThemeProvider} from "styled-components";
+import Landing from "./src/landing";
+import SMS from "./src/sms";
+import UserProfile from "./src/user-profile";
+import NoMatch from "./src/nomatch";
 // import Loadable from 'react-loadable';
 // const AsyncComponent = Loadable({
 //     loader: () => import(/* webpackChunkName: "myNamedChunk" */ './SomeComponent'),
 //     loading: () => <div>loading...</div>,
 //     modules: ['myNamedChunk'],
 // });
-import React from "react";
-import {Provider} from "react-redux";
-import {Router, Route, Switch, Redirect} from "react-router";
-// import {ThemeProvider} from "styled-components";
-import Landing from "./src/landing";
-import SMS from "./src/sms";
-import NoMatch from "./src/nomatch";
 // import autobind from "autobind-decorator";
 // import Async from "react-code-splitting";
 // const BodyHomeManage = () => <Async load={import('./app/body/home-manage')}/>;
@@ -38,15 +39,16 @@ export class App extends React.Component {
         let newTheme = Object.assign({}, theme, this.state);
         return (
             <Provider store={store}>
-                {/*<ThemeProvider theme={newTheme}>*/}
+                <ThemeProvider theme={newTheme}>
                     <Router history={history}>
                         <Switch>
                             <Route exact path="/" component={Landing}/>
                             <Route path="/sms" component={SMS}/>
+                            <Route path="/user-profile" component={UserProfile}/>
                             <Route component={NoMatch}/>
                         </Switch>
                     </Router>
-                {/*</ThemeProvider>*/}
+                </ThemeProvider>
             </Provider>
         )
     }

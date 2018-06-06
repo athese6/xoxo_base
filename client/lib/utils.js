@@ -1,4 +1,4 @@
-const moment = require("moment");
+import moment from "moment";
 
 const lib = {
     isEmail: email => {
@@ -18,4 +18,4 @@ const lib = {
     }
 
 };
-module.exports = lib;
+export default lib;

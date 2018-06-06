@@ -2,12 +2,9 @@ import React from "react";
 import {connect} from "react-redux";
 import Seo from "./components/seo";
 import autobind from 'autobind-decorator';
-import base from './components/base';
+import {View, Input, Button, Label} from './components/base';
 import facebookActions from "../actions/facebook";
 
-const Div = base.View;
-const Button = base.Button;
-const Input = base.Input;
 // import {View, Text, Image, StyleSheet} from 'react-primitives';
 // import moment from "moment";
 // import styles from "./sms.styles";
@@ -100,12 +97,12 @@ export default class SMSLayout extends React.Component {
 
     render() {
         return (
-            <Div>
+            <View>
                 <Seo title={"aadsfsfsfsfsfsfsfs"}/>
                 <Input defaultValue="+82" id="country_code"/>
                 <Input placeHolder="phone number" id="phone_number"/>
                 <Button onClick={this.smsLogin}>Login via SMS</Button>
-            </Div>
+            </View>
         );
     }
 }

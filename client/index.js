@@ -1,6 +1,8 @@
 import 'materialize-css/dist/js/materialize.min.js'
 import 'materialize-css/dist/css/materialize.min.css';
-import './index.css';
+import 'react-dropzone-component/styles/filepicker.css';
+import "dropzone/dist/min/dropzone.min.css";
+import './index.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {App} from "./app.js";

@@ -61,50 +61,51 @@ const DefaultComponent = styled.div.attrs({
   line-height: ${props => props.lineHeight};
 `;
 
-export default {
-    View: DefaultComponent.withComponent("div"),
-    Text: DefaultComponent.withComponent("h1"),
-    Input: DefaultComponent.withComponent("input"),
-    Button: DefaultComponent.withComponent("button").extend.attrs({
-        className: props => {
-            let ret = "waves-effect";
-            if (props.className) {
-                ret += " " + props.className;
-            }
-            if (props.color === "white") {
-                return ret += " waves-gray";
-            }
-            else {
-                return ret += " waves-light";
-            }
-        },
-        "data-target": props => props.dataTarget
-    })`
-  border: none;
-  background-color: ${props => {
-        if (props.color === "yellow") {
-            return "yellow";
-        }
-        if (props.color === "gray") {
-            return "#898d92";
+exports.Utils = utils;
+exports.View = DefaultComponent.withComponent("div");
+exports.Text = DefaultComponent.withComponent("h1");
+exports.Input = DefaultComponent.withComponent("input");
+exports.Label = DefaultComponent.withComponent("label");
+exports.Button = DefaultComponent.withComponent("button").extend.attrs({
+    className: props => {
+        let ret = "waves-effect";
+        if (props.className) {
+            ret += " " + props.className;
         }
         if (props.color === "white") {
-            return "white";
+            return ret += " waves-gray";
         }
-        if (props.color === "naver") {
-            return "green";
+        else {
+            return ret += " waves-light";
         }
-        return props.color;
-    }};
+    },
+    "data-target": props => props.dataTarget
+})`
+  border: none;
+  background-color: ${props => {
+    if (props.color === "yellow") {
+        return "yellow";
+    }
+    if (props.color === "gray") {
+        return "#898d92";
+    }
+    if (props.color === "white") {
+        return "white";
+    }
+    if (props.color === "naver") {
+        return "green";
+    }
+    return props.color;
+}};
   color: ${props => {
-        if (props.textColor) {
-            return props.textColor;
-        }
-        if (props.color === "gray" || props.color === "naver") {
-            return "white";
-        }
-        return "black";
-    }};  
+    if (props.textColor) {
+        return props.textColor;
+    }
+    if (props.color === "gray" || props.color === "naver") {
+        return "white";
+    }
+    return "black";
+}};  
   font-size: ${props => props.fontSize || "16px"};
   font-weight: ${props => props.fontWeight || "600"};;
   height: ${props => props.height || "64px"};
@@ -112,29 +113,27 @@ export default {
   cursor: pointer;
   &:focus{
     background-color: ${props => {
-        if (props.color === "yellow") {
-            return "yellow";
-        }
-        if (props.color === "gray") {
-            return "#898d92";
-        }
-        if (props.color === "white") {
-            return "white";
-        }
-        if (props.color === "naver") {
-            return "#1cbb41";
-        }
-        return props.color;
-    }};
+    if (props.color === "yellow") {
+        return "yellow";
+    }
+    if (props.color === "gray") {
+        return "#898d92";
+    }
+    if (props.color === "white") {
+        return "white";
+    }
+    if (props.color === "naver") {
+        return "#1cbb41";
+    }
+    return props.color;
+}};
     color: ${props => {
-        if (props.textColor) {
-            return props.textColor;
-        }
-        if (props.color === "gray" || props.color === "naver") {
-            return "white";
-        }
-        return "black";
-    }};
-  }`,
-    Utils: utils
-}
+    if (props.textColor) {
+        return props.textColor;
+    }
+    if (props.color === "gray" || props.color === "naver") {
+        return "white";
+    }
+    return "black";
+}};
+  }`;

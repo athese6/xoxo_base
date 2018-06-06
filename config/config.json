@@ -20,6 +20,7 @@
     "public": "public",
     "appBuild": "build",
     "appSrc": "client",
+    "appUploadImage": "upload-images",
     "appIndexJs": "client/index.js",
     "configJs": "config/config.js",
     "assetManifestJson": "asset-manifest.json"
