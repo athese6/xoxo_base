@@ -1,7 +1,5 @@
 import 'materialize-css/dist/js/materialize.min.js'
-import 'materialize-css/dist/css/materialize.min.css';
-import 'react-dropzone-component/styles/filepicker.css';
-import "dropzone/dist/min/dropzone.min.css";
+
 import './index.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -21,7 +19,7 @@ const render = App => {
         element.removeAttribute("data-state");
 
         ReactDOM.render(<App store={store} history={history}
-                             theme={theme}/>, element.childNodes[0] || element);
+                             theme={theme.first}/>, element.childNodes[0] || element);
     }
 };
 

@@ -1,0 +1,31 @@
+@import '~draft-js-emoji-plugin/lib/plugin.css';
+
+.draftJsEmojiPlugin__emojiSelectButton__3sPol, .draftJsEmojiPlugin__emojiSelectButtonPressed__2Tezu {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+  color: #ddddd;
+  background: #eeeeee;
+  border-radius: 0;
+  height: 34px;
+  width: 36px;
+  cursor: pointer;
+}
+
+.draftJsEmojiPlugin__emojiSelectButton__3sPol:focus, .draftJsEmojiPlugin__emojiSelectButtonPressed__2Tezu:focus {
+  outline: 0;
+  /* reset for :focus */
+}
+
+.draftJsEmojiPlugin__emojiSelectButton__3sPol:hover, .draftJsEmojiPlugin__emojiSelectButtonPressed__2Tezu:hover {
+  background: #f3f3f3;
+}
+
+.draftJsEmojiPlugin__emojiSelectButton__3sPol:active, .draftJsEmojiPlugin__emojiSelectButtonPressed__2Tezu:active {
+  background: #e6e6e6;
+}
+
+.draftJsEmojiPlugin__emojiSelectButtonPressed__2Tezu {
+  background: #ededed;
+}

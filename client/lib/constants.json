@@ -5,5 +5,17 @@
     "headers": {
       "X-Requested-With": "XMLHttpRequest"
     }
+  },
+  "draft": {
+    "hashtag": true,
+    "linkify": true,
+    "mention": true,
+    "focus": true,
+    "alignment": true,
+    "resizeable": true,
+    "image": true,
+    "undo": true,
+    "video": true,
+    "emoji": false
   }
 }

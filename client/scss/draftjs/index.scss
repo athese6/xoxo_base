@@ -1,0 +1,29 @@
+@import "dropdown";
+@import "dropdownOption";
+@import "option";
+@import "font-family";
+@import "spinner";
+@import "hashtag-plugin";
+@import "mention-plugin";
+@import "static-toolbar-plugin";
+@import "alignment-plugin";
+@import "undo-plugin";
+@import "emoji-plugin";
+@import '~draft-js-linkify-plugin/lib/plugin.css';
+@import '~draft-js-focus-plugin/lib/plugin.css';
+@import '~draft-js-image-plugin/lib/plugin.css';
+
+.editor {
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  cursor: text;
+  padding: 16px;
+  border-radius: 2px;
+  margin-bottom: 2em;
+  box-shadow: inset 0px 1px 8px -3px #ABABAB;
+  background: #fefefe;
+}
+
+.editor :global(.public-DraftEditor-content) {
+  min-height: 140px;
+}

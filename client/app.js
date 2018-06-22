@@ -5,6 +5,7 @@ import {ThemeProvider} from "styled-components";
 import Landing from "./src/landing";
 import SMS from "./src/sms";
 import UserProfile from "./src/user-profile";
+import Board from "./src/board";
 import NoMatch from "./src/nomatch";
 // import Loadable from 'react-loadable';
 // const AsyncComponent = Loadable({
@@ -45,6 +46,7 @@ export class App extends React.Component {
                             <Route exact path="/" component={Landing}/>
                             <Route path="/sms" component={SMS}/>
                             <Route path="/user-profile" component={UserProfile}/>
+                            <Route path="/board" component={Board}/>
                             <Route component={NoMatch}/>
                         </Switch>
                     </Router>

@@ -1,7 +1,7 @@
-//h1, h2, h3, h4, h5, h6, body {
-//  font-family: $font-family-base !important;
-//  font-weight: 400;
-//}
+@import '~materialize-css/dist/css/materialize.min.css';
+@import '~react-dropzone-component/styles/filepicker.css';
+@import "~dropzone/dist/min/dropzone.min.css";
+@import "scss/index";
 
 .row-center {
   @extend .row;
@@ -42,4 +42,5 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
 

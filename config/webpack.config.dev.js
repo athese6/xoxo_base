@@ -316,13 +316,14 @@ module.exports = {
             // split only javascript
             minChunks: ({context, resource}) => resource && (/^.*\.(css|scss)$/).test(resource) ? false : /node_modules/.test(context),
         }),
-        // new webpack.ProvidePlugin({
-        //     $: 'jquery/dist/jquery',
-        //     jQuery: 'jquery/dist/jquery',
-        //     'window.$': 'jquery/dist/jquery',
-        //     'window.jQuery': 'jquery/dist/jquery',
-        //     "Hammer": "hammerjs/hammer",
-        // })
+        new webpack.ProvidePlugin({
+            // M: 'materialize-css/dist/js/materialize.min.js'
+            // $: 'jquery/dist/jquery',
+            // jQuery: 'jquery/dist/jquery',
+            // 'window.$': 'jquery/dist/jquery',
+            // 'window.jQuery': 'jquery/dist/jquery',
+            //     "Hammer": "hammerjs/hammer",
+        })
     ].concat(
         // webpack analyzer
         config.webpack.analyze ? new BundleAnalyzerPlugin() : []

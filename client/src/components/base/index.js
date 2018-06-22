@@ -44,6 +44,7 @@ const DefaultComponent = styled.div.attrs({
   flex-grow: ${props => props.flexGrow};
   flex-shrink: ${props => props.flexShrink};
   flex-flow: ${props => props.flexFlow};
+  flex-direction: ${props => props.flexDirection};
   align-content: ${props => props.alignContent};
   align-items: ${props => props.alignItems};
   align-self: ${props => props.alignSelf};
@@ -64,8 +65,13 @@ const DefaultComponent = styled.div.attrs({
 exports.Utils = utils;
 exports.View = DefaultComponent.withComponent("div");
 exports.Text = DefaultComponent.withComponent("h1");
+exports.Pre = DefaultComponent.withComponent("pre");
 exports.Input = DefaultComponent.withComponent("input");
 exports.Label = DefaultComponent.withComponent("label");
+exports.Span = DefaultComponent.withComponent("span");
+exports.Image = DefaultComponent.withComponent("img");
+exports.Select = DefaultComponent.withComponent("select");
+exports.Option = DefaultComponent.withComponent("option");
 exports.Button = DefaultComponent.withComponent("button").extend.attrs({
     className: props => {
         let ret = "waves-effect";
@@ -94,6 +100,9 @@ exports.Button = DefaultComponent.withComponent("button").extend.attrs({
     }
     if (props.color === "naver") {
         return "green";
+    }
+    if (!props.color) {
+        return props.theme.main;
     }
     return props.color;
 }};

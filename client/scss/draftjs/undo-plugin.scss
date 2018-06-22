@@ -1,0 +1,33 @@
+@import '~draft-js-undo-plugin/lib/plugin.css';
+
+.draftJsUndoPlugin__button__3Vugn {
+  background: #fbfbfb;
+  color: #888;
+  font-size: 18px;
+  border: 0;
+  border-radius: 0;
+  vertical-align: bottom;
+  height: 34px;
+  width: 36px;
+}
+
+.draftJsUndoPlugin__button__3Vugn:focus {
+  background-color: #eee;
+  color: #999;
+  outline: 0; /* reset for :focus */
+}
+
+.draftJsUndoPlugin__button__3Vugn:hover {
+  background-color: #eee;
+  color: #999;
+}
+
+.draftJsUndoPlugin__button__3Vugn:active {
+  background-color: #ddd;
+  color: #777;
+}
+
+.draftJsUndoPlugin__button__3Vugn:disabled {
+  background-color: #F5F5F5;
+  color: #ccc;
+}
