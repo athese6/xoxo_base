@@ -1,10 +1,14 @@
 const jso = require('json-override');
-
+const Config = require('react-native-config');
 console.log("native process.env.NODE_ENV = " + process.env.NODE_ENV);
-console.log("native process.env.BABEL_ENV = " + process.env.BABEL_ENV);
+console.log("native Config.BUILD_MODE = " + Config.BUILD_MODE);
 let dependConfig;
-dependConfig = require('./config.native.json');
-const config = jso(require('./config.json'), dependConfig);
+if (Config.BUILD_MODE == "production") {
+    dependConfig = require('./config.native.prod.json');
+} else {
+    dependConfig = require('./config.native.dev.json');
+}
+const config = jso(require('./config.native.json'), dependConfig);
 
 config.express = app => {
     const settings = config.app;

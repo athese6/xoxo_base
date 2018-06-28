@@ -1,0 +1,9 @@
+{
+  "app": {
+    "contextName": "http://13.124.177.205",
+    "port": "80"
+  },
+  "webpack": {
+    "configJs": "webpack.config.prod.js"
+  }
+}
