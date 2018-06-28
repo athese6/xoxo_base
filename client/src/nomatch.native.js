@@ -1,4 +1,5 @@
 import React from "react";
+import {View, Text} from './components/base';
 // import {connect} from "react-redux";
 // import {View, Text, Image, StyleSheet} from 'react-primitives';
 // import moment from "moment";
@@ -28,11 +29,11 @@ export default class NoMatchLayout extends React.Component {
 
     render() {
         return (
-            <div>
-                <h1>
+            <View>
+                <Text>
                     {"NoMatchLayout"}
-                </h1>
-            </div>
+                </Text>
+            </View>
         );
     }
 }

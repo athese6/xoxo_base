@@ -69,23 +69,48 @@ const service = {
                 }
             })
     },
-    // changeLanguage: user => new Promise((resolve, reject) => {
-    //     models.User.get(user.id).run()
-    //         .then(getUser => {
-    //             if (getUser) {
-    //                 return getUser.merge({"lang": user.lang}).save({conflict: "update"})
-    //             }
-    //             let error = new models.Error();
-    //             error.push("user is not registered.", "user");
-    //             reject(error);
-    //         })
-    //         .then(user => {
-    //             cache.deleteUser(user.id);
-    //             return resolve(user.lang);
-    //         })
-    //         .catch(reject);
-    // }),
-
+    makeInitialState: req => {
+        const {user = {}, query} = req;
+        const isAuthenticated = req.isAuthenticated();
+        const {defaultLocale, locales} = config.i18n;
+        user.lang = req.locale;
+        // theme options
+        const options = {
+            user,
+            publicPath: config.app.public,
+            state: {
+                auth: {
+                    isAuthenticated,
+                    user,
+                    error: null
+                },
+                i18n: {
+                    locales,
+                    translations: req.getCatalog()
+                }
+            },
+            html: "",
+            css: ""
+        };
+        return options;
+    },
+    makeInitialStateAuth: req => {
+        const {user = {}, query} = req;
+        const isAuthenticated = req.isAuthenticated();
+        user.lang = req.locale;
+        return {
+            isAuthenticated,
+            user,
+            error: null
+        };
+    },
+    makeInitialStateI18N: req => {
+        const {defaultLocale, locales} = config.i18n;
+        return {
+            locales,
+            translations: req.getCatalog()
+        };
+    },
     connectFacebook: profile => new Promise((resolve, reject) => {
         let facebook_profile = service.parseFacebookProfile(profile);
 

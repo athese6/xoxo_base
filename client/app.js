@@ -7,6 +7,7 @@ import SMS from "./src/sms";
 import UserProfile from "./src/user-profile";
 import Board from "./src/board";
 import NoMatch from "./src/nomatch";
+import PropTypes from "prop-types";
 // import Loadable from 'react-loadable';
 // const AsyncComponent = Loadable({
 //     loader: () => import(/* webpackChunkName: "myNamedChunk" */ './SomeComponent'),
@@ -55,3 +56,11 @@ export class App extends React.Component {
         )
     }
 }
+
+App.propTypes = {
+    init: PropTypes.object
+};
+
+App.defaultProps = {
+    init: {}
+};

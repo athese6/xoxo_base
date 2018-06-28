@@ -6,6 +6,23 @@ import {push} from "react-router-redux";
 
 export default {
     clearAuthErrors: () => ({type: "CLEAR_AUTH_ERRORS"}),
+    initialize: () => dispatch => {
+        // dispatch(layoutActions.showLoadingView());
+        dispatch({
+            type: "AUTH_INITIALIZE", payload: new Promise((resolve, reject) => {
+                api.get("/auth/initialize")
+                    .then(payload => {
+                        // dispatch(layoutActions.hideLoadingView());
+                        resolve(payload);
+                    })
+                    .catch(err => {
+                        reject(err);
+                        // dispatch(layoutActions.hideLoadingView());
+                    });
+            })
+        }).catch((e) => {
+        });
+    },
     changeLanguage: lang => dispatch => {
         dispatch(layoutActions.showLoadingView());
         dispatch({

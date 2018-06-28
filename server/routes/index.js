@@ -3,6 +3,7 @@ const router = express.Router();
 const config = require('../../config/config.js');
 const {reactServerRender} = require("../lib/react");
 const url = require('url');
+const services = require("../services");
 
 // router.get(["/:lang?", "/:lang?/*"], (req, res, next) => {
 //     const {user = {}, query} = req;
@@ -73,9 +74,8 @@ const resolvePath = (...args) => args.filter(arg => arg).join("/");
 // the original request, including the query string.
 // router.get(routeList, (req, res, next) => {
 router.get(["/:lang?", "/:lang?/*"], (req, res, next) => {
-    const {user = {}, query} = req;
+    const {query} = req;
     const {lang} = req.params;
-    const isAuthenticated = req.isAuthenticated();
     const {defaultLocale, locales} = config.i18n;
     // first check if the parameter is actually a language code
     const isLang = lang && locales.some(locale => locale.code === lang);
@@ -102,25 +102,8 @@ router.get(["/:lang?", "/:lang?/*"], (req, res, next) => {
             }));
         }
     }
-    user.lang = req.locale;
-    // theme options
-    const options = {
-        user,
-        publicPath: config.app.public,
-        state: {
-            auth: {
-                isAuthenticated,
-                user,
-                error: null
-            },
-            i18n: {
-                locales,
-                translations: req.getCatalog()
-            }
-        },
-        html: "",
-        css: ""
-    };
+
+    const options = services.Auth.makeInitialState(req);
     return reactServerRender(req, res, next, options);
 });
 

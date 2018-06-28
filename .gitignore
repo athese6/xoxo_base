@@ -26,3 +26,10 @@ yarn-error.log*
 /key
 /i18n/download-languages.js
 /upload-images
+/ios/build
+/ios/Index
+/ios/Pods
+/android/build
+/android/.gradle
+/android/.idea
+/android/app/build

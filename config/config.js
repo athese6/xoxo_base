@@ -1,12 +1,15 @@
 const jso = require('json-override');
 
+console.log("process.env.NODE_ENV = " + process.env.NODE_ENV);
+console.log("process.env.BABEL_ENV = " + process.env.BABEL_ENV);
 let dependConfig;
-if (process.env.NODE_ENV === 'production') {
+if (process.env.BABEL_ENV === 'production') {
     dependConfig = require('./config.prod.json');
 }
 else {
     dependConfig = require('./config.dev.json');
 }
+
 const config = jso(require('./config.json'), dependConfig);
 
 config.express = app => {

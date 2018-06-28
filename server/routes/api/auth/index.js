@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const i18n = require('../../../lib/i18n');
 const accountkit = require('../../../lib/facebook-account-kit');
-// const services = require("../../../services");
+const services = require("../../../services");
 const passport = require('passport');
 
 
@@ -102,4 +102,17 @@ router.post('/sms', (req, res) => {
          */
     });
 });
+
+
+router.get('/initialize', (req, res) => {
+    //accountKitState and accountKitCode are the response thet we get from account kit login operation. look for sample app for more usage information.
+    const options = services.Auth.makeInitialStateAuth(req);
+    res.send(options);
+});
+router.get('/initialize_i18n', (req, res) => {
+    //accountKitState and accountKitCode are the response thet we get from account kit login operation. look for sample app for more usage information.
+    const options = services.Auth.makeInitialStateI18N(req);
+    res.send(options);
+});
+
 module.exports = router;

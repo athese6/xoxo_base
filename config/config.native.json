@@ -1,0 +1,15 @@
+{
+  "app": {
+    "contextName": "http://13.124.177.205"
+  },
+  "webpack": {
+    "configJs": "webpack.config.prod.js",
+    "babel": {
+      "presets": [
+        "es2015",
+        "react-native",
+        "stage-1"
+      ]
+    }
+  }
+}

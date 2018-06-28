@@ -3,11 +3,28 @@ import actionUtil from "../lib/action-util";
 export default (state = {
     isAuthenticated: false,
     user: {},
+    initialize: false,
     error: null
 }, action = {}) => {
     switch (action.type) {
         case "CLEAR_AUTH_ERRORS":
             return {...state, success: {}, error: null};
+        case "AUTH_INITIALIZE_PENDING":
+            return {
+                isAuthenticated: false,
+                user: {},
+                error: null
+            };
+        case "AUTH_INITIALIZE_REJECTED":
+            return {...state, error: actionUtil.getError(action)};
+        case "AUTH_INITIALIZE_FULFILLED":
+            return {
+                ...state,
+                isAuthenticated: actionUtil.getResponseData(action).isAuthenticated,
+                user: actionUtil.getResponseData(action).user,
+                initialize: true,
+                error: null
+            };
         case "AUTH_CHANGE_LANGUAGE_PENDING":
             return {...state, success: {...state.success, lang: false}, error: null};
         case "AUTH_CHANGE_LANGUAGE_REJECTED":
